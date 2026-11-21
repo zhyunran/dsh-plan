@@ -62,3 +62,43 @@ test('a stalled plan with an open item still allows work', () => {
 test('the gate can be switched off', () => {
   assert.equal(workGateDecision('write', undefined, { requireOpenItemForWork: false }), undefined)
 })
+
+test('the all-tools gate refuses reads too when there is no plan', async () => {
+  const { toolGateDecision } = await import('../lib/workgate.js')
+  for (const tool of ['read', 'grep', 'glob', 'web_search', 'web_fetch', 'pwsh', 'write']) {
+    const decision = toolGateDecision(tool, undefined, {})
+    assert.equal(decision.kind, 'deny', tool)
+    assert.match(decision.reason, /plan_create/)
+  }
+})
+
+test('the all-tools gate keeps plan_* and ask_user_question open', async () => {
+  const { toolGateDecision } = await import('../lib/workgate.js')
+  for (const tool of ['plan_create', 'plan_status', 'plan_check', 'plan_needs_user', 'plan_update', 'ask_user_question']) {
+    assert.equal(toolGateDecision(tool, undefined, {}), undefined, tool)
+  }
+})
+
+test('the all-tools gate refuses everything while paused or complete', async () => {
+  const { toolGateDecision } = await import('../lib/workgate.js')
+  const paused = plan()
+  pause(paused, 'user stop')
+  assert.equal(toolGateDecision('read', paused, {}).kind, 'deny')
+
+  const done = plan()
+  for (const item of done.items) item.status = 'done'
+  assert.equal(toolGateDecision('read', done, {}).kind, 'deny')
+})
+
+test('the all-tools mode allows any tool while an item is open', async () => {
+  const { toolGateDecision } = await import('../lib/workgate.js')
+  const created = plan()
+  assert.equal(toolGateDecision('read', created, {}), undefined)
+  assert.equal(toolGateDecision('pwsh', created, {}), undefined)
+})
+
+test('narrow mode still lets reads through without a plan', async () => {
+  const created = plan()
+  assert.equal(workGateDecision('read', undefined, { workTools: ['write'] }), undefined)
+  assert.equal(workGateDecision('write', undefined, { workTools: ['write'] }).kind, 'deny')
+})

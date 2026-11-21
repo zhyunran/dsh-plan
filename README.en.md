@@ -103,17 +103,19 @@ Launching a game, opening a new session, building, installing, writing files, se
 - 不要停 / 别停 / 我没说停就不停 are read as "continue";
 - 我走了 / 我睡了 is not a stop — leaving is not stopping.
 
-### 7. No work without an open item
+### 7. No plan means no tool calls at all
 
-Writing files, running commands, launching games, starting subagents, opening peer sessions — these are **refused outright** (a failed tool call, not a hint) when:
+With the switch on, **every tool call** is refused outright (a failed tool call, not a hint) when:
 
 - the session has no plan at all;
 - the plan is paused (you said stop);
 - the plan has no open item (everything is done or waiting on you).
 
-Reads, searches, questions and the `plan_*` tools themselves stay open. To work, create a plan first, or `plan_update add` to the existing one.
+Two exceptions only: `plan_*` (create / edit / check) and `ask_user_question` (asking is not work). Reads, searches, web fetches and commands all need a plan first.
 
-> This is the other half of enforcement: previously only "a turn may not end with an unchecked item" was enforced, so the model could do work without ever creating a plan. `requireOpenItemForWork` (default on) switches it off.
+To work, create a plan first, or `plan_update add` to the existing one.
+
+> This is the other half of enforcement: previously only "a turn may not end with an unchecked item" was enforced, so the model could do work — or even read — without ever creating a plan. `requirePlanForAllTools` (default on) selects this all-tools mode; turning it off falls back to the older narrow mode (write / command / game / subagent only), controlled by `requireOpenItemForWork`.
 
 ### 8. A new round archives the old plan; an interruption allows one rewrite
 
@@ -196,6 +198,7 @@ After restart, resume, fork or compaction, the plan is read back by session id; 
     deleteGate: true
     maxForcedWithoutProgress: 12
     requireOpenItemForWork: true
+    requirePlanForAllTools: true
 ```
 
 ### Web dock

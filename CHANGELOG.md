@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.0 — 2026-11-21
+
+- **All-tools gate** (reported live: a session had the switch on, no plan, and
+  still called tools). With the switch on, every tool call is now refused when
+  the session has no plan, the plan is paused, or no required item is open.
+  Only `plan_*` and `ask_user_question` stay available.
+- New `requirePlanForAllTools` config (default `true`). Setting it to `false`
+  restores the previous narrow mode (state-changing tools only), which is
+  controlled by `requireOpenItemForWork`.
+- README rule 7 and the injected prompt now state the all-tools rule.
+- Tests: 53.
+
 ## 0.5.4 — 2026-11-21
 
 - Chinese README is now the default `README.md` (GitHub renders it first);
