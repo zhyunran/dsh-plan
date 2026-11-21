@@ -1,6 +1,6 @@
 {
   "name": "dsh-plan",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A task-plan gate for DSH: seven checkboxes, two approvals, a rule that a turn cannot end while a required item is still unchecked, and a Web dock that shows whether the turn is being held.",
   "type": "module",
   "main": "./lib/index.js",

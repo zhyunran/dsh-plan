@@ -4,7 +4,8 @@
 #
 #   - id: dsh-plan
 #     config:
-#       minRequiredItems: 7      # a plan refuses to exist with fewer required items
+#       minRequiredItems: 7      # default lower bound; the viewer can override per session
+#       maxRequiredItems: 12     # default upper bound; the viewer can override per session
 #       archiveGate: true        # ask the user before archiving a session
 #       deleteGate: true         # ask the user before deleting existing files
 #       maxForcedWithoutProgress: 12
@@ -15,6 +16,7 @@
       name: dsh-plan
       config:
         minRequiredItems: 7
+        maxRequiredItems: 12
         archiveGate: true
         deleteGate: true
         maxForcedWithoutProgress: 12

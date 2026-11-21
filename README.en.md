@@ -52,7 +52,7 @@ plan_create(items: [
 ])
 ```
 
-- At least **7 required** items. If you cannot break it into 7, the task is not understood yet.
+- Between **7 and 12 required** items by default (adjustable to any 1–50 range in the plan viewer).
 - Every item needs `done_when` — observable, not "make it good".
 - `optional` items exist and never block the end.
 
@@ -194,6 +194,7 @@ After restart, resume, fork or compaction, the plan is read back by session id; 
   name: dsh-plan
   config:
     minRequiredItems: 7
+    maxRequiredItems: 12
     archiveGate: true
     deleteGate: true
     maxForcedWithoutProgress: 12
@@ -229,6 +230,8 @@ Data comes from the read-only `GET /_dsh-plan/state?sessionId=…` endpoint (pol
 **A switch sits at the right of the composer: `Plan · on / off`.** Turning it off disables the work gate and the stop rule for that session (no plan required, nothing held); the value persists in `.dsh-plan/<session>/settings.json` and survives a restart. Default on. The switch is not routed through the model — one click applies immediately.
 
 **A `Plan` button sits in the assistant-message action row (next to like / dislike)**: it opens a read-only panel with this conversation's current plan and the recently archived plans (time, reason, item count).
+
+**The same panel lets you change the plan size range**: `Plan size [7] – [12]` with a Save button, 1–50, affecting only plans created afterwards. Default 7–12; saved into `.dsh-plan/<session>/settings.json`.
 
 ### Known limits
 

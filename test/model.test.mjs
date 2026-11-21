@@ -211,3 +211,26 @@ test('run mode and parked questions keep the plan', async () => {
 
   assert.equal(archiveDecision(undefined), null)
 })
+
+test('the plan size upper bound is enforced', () => {
+  const eight = Array.from({ length: 8 }, (_, index) => `任务${index + 1} || 结果${index + 1}`)
+  assert.throws(
+    () => createPlan({ sessionId: 's', cwd: 'C:/w', lines: eight, minRequired: 7, maxRequired: 7 }),
+    /at most 7 required items/,
+  )
+  const seven = createPlan({ sessionId: 's', cwd: 'C:/w', lines: eight.slice(0, 7), minRequired: 7, maxRequired: 7 })
+  assert.equal(seven.items.length, 7)
+})
+
+test('the configured range is reported in the error message', () => {
+  const six = Array.from({ length: 6 }, (_, index) => `任务${index + 1} || 结果${index + 1}`)
+  assert.throws(
+    () => createPlan({ sessionId: 's', cwd: 'C:/w', lines: six, minRequired: 3, maxRequired: 4 }),
+    /at most 4 required items/,
+  )
+})
+
+test('without a maximum the plan is unbounded', () => {
+  const many = Array.from({ length: 20 }, (_, index) => `任务${index + 1} || 结果${index + 1}`)
+  assert.equal(createPlan({ sessionId: 's', cwd: 'C:/w', lines: many, minRequired: 7 }).items.length, 20)
+})

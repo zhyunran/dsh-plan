@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.7.0 — 2026-11-21
+
+- **Adjustable plan size.** Each session has `minItems` / `maxItems`
+  (defaults 7–12, hard range 1–50). The plan viewer shows two inputs plus a
+  Save button; the values persist in `settings.json` and only affect plans
+  created afterwards.
+- `plan_create` enforces the range on required items and reports which bound
+  was hit.
+- Config defaults `minRequiredItems` / `maxRequiredItems`; `POST
+  /_dsh-plan/settings` accepts `minItems` / `maxItems` alongside `enabled`.
+- Tests: 63.
+
 ## 0.6.0 — 2026-11-21
 
 - **All-tools gate** (reported live: a session had the switch on, no plan, and
