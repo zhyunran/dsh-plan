@@ -1,0 +1,55 @@
+{
+  "name": "dsh-plan",
+  "version": "0.5.4",
+  "description": "A task-plan gate for DSH: seven checkboxes, two approvals, a rule that a turn cannot end while a required item is still unchecked, and a Web dock that shows whether the turn is being held.",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "docs",
+    "cordis.patch.yml",
+    "README.md",
+    "README.en.md",
+    "README.zh.md",
+    "CHANGELOG.md",
+    "DESENSITIZE.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": ">=0.2.0-rc.1 <0.3.0"
+  },
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check:desensitize": "node scripts/check-desensitize.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "plan",
+    "checklist",
+    "guardrail",
+    "task-list"
+  ],
+  "license": "MIT"
+}

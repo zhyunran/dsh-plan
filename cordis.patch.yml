@@ -1,0 +1,22 @@
+# dsh-plan — insert this bundle into a DSH profile.
+#
+# Defaults below are the shipped policy. Tighten per profile if needed:
+#
+#   - id: dsh-plan
+#     config:
+#       minRequiredItems: 7      # a plan refuses to exist with fewer required items
+#       archiveGate: true        # ask the user before archiving a session
+#       deleteGate: true         # ask the user before deleting existing files
+#       maxForcedWithoutProgress: 12
+#
+- insert:
+    - id: dsh-plan
+      name: dsh-plan
+      config:
+        minRequiredItems: 7
+        archiveGate: true
+        deleteGate: true
+        maxForcedWithoutProgress: 12
+        # Phrases are matched against real user messages only (source.kind === 'user').
+        stopPhrases: []
+        runPhrases: []
